@@ -150,7 +150,7 @@ public class SQLTest {
             e.printStackTrace();
         }
 
-        AllDriverManager.closeDriver();
+        AllDriverManager.quitDriver();
     }
 }
 

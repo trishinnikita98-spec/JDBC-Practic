@@ -14,7 +14,7 @@ public class Hook {
 
     @After
     public void afterScenario(Scenario scenario) {
-        AllDriverManager.closeDriver();
+        AllDriverManager.quitDriver();
     System.out.println("AFTER: " + scenario.getName() + " - " + scenario.getStatus());
     }
 

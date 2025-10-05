@@ -26,30 +26,16 @@ public class RegistrationStep {
     public String SELENOID_URL = "https://selenoid-ui.applineselenoid.fvds.ru/#/";
 
     public RegistrationStep() {
-        if (System.getProperty("type.browser") != null &&
-                System.getProperty("type.browser").equals("chrome")) {
-            // Конфигурация для Jenkins
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("--headless");
-            options.addArguments("--no-sandbox");
-            options.addArguments("--disable-dev-shm-usage");
-            options.addArguments("--remote-allow-origins=*");
-            options.setBinary("/usr/bin/google-chrome"); // правильный путь для Linux
-
-            this.driver = new ChromeDriver(options);
-        } else {
-            // Ваша текущая конфигурация для локального запуска
-            this.driver = AllDriverManager.getDriver();
-        }
-    }
-    @Before
-    public void setUp() {
         this.driver = AllDriverManager.getDriver();
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        AllDriverManager.openRegistrationPage();
+    }
+
+    @Before
+    public void setUp() {
+         AllDriverManager.openRegistrationPage();
 
         wait.until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//input[@id='input-firstname' or @name='firstname']")
+                By.xpath("//input[@id='input-firstname']")
         ));
     }
     @Когда("пользователь вводит данные с email {string}")

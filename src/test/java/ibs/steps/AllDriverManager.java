@@ -1,9 +1,12 @@
 package ibs.steps;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -17,6 +20,16 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.net.URL;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AllDriverManager {
     private static WebDriver driver;
@@ -54,20 +67,31 @@ public class AllDriverManager {
 
     private static WebDriver createSelenoidDriver() {
         try {
-            ChromeOptions options = new ChromeOptions();
-            options.setCapability("browserName", "chrome");
+            String browser = ConfigManager.getProperty("type.browser");
+            DesiredCapabilities caps = new DesiredCapabilities();
+
+            switch (browser.toLowerCase()) {
+                case "chrome":
+                    caps.setBrowserName("chrome");
+                    break;
+                case "firefox":
+                    caps.setBrowserName("firefox");
+                    break;
+                default:
+                    throw new IllegalArgumentException("Неизвестный браузер: " + browser);
+            }
 
             // Selenoid capabilities
             Map<String, Object> selenoidOptions = new HashMap<>();
             selenoidOptions.put("enableVNC", true);  // Видеть что происходит в браузере
             selenoidOptions.put("enableVideo", false); // Не записывать видео
-            options.setCapability("selenoid:options", selenoidOptions);
+            caps.setCapability("selenoid:options", selenoidOptions);
 
             String hubUrl = ConfigManager.getProperty("selenoid.url");
             System.out.println("Подключаюсь к Selenoid Hub: " + hubUrl);
             System.out.println("Мониторинг: " + ConfigManager.getProperty("selenoid.uiurl"));
 
-            return new RemoteWebDriver(new URL(hubUrl), options);
+            return new RemoteWebDriver(new URL(hubUrl), caps);
 
         } catch (Exception e) {
             System.err.println("Ошибка подключения к Selenoid Hub: " + e.getMessage());
@@ -92,7 +116,6 @@ public class AllDriverManager {
     }
 
     public static void closeDriver() {
-
         if (driver != null) {
             driver.manage().deleteAllCookies();
             driver.close();
@@ -101,14 +124,16 @@ public class AllDriverManager {
             System.out.println("окно закрыто");
         }
     }
+
     public static void quitDriver() {
         if (driver != null) {
-            driver.close();
+            driver.quit();
             driver = null;
             wait = null;
             System.out.println("окно закрыто");
         }
     }
+
     public static String getRunMode() {
         return ConfigManager.isSelenoidMode() ? "selenoid" : "local";
     }
