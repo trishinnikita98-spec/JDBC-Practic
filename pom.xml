@@ -16,6 +16,7 @@
         <allure.version>2.24.0</allure.version>
         <aspectj.version>1.9.20.1</aspectj.version>
         <slf4j.version>2.0.9</slf4j.version>
+        <type>selenoid</type>
         <browser>chrome</browser>
     </properties>
 
@@ -91,6 +92,7 @@
                     <testFailureIgnore>true</testFailureIgnore>
                     <systemPropertyVariables>
                         <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+                        <type>${type}</type>
                         <browser>${browser}</browser>
                         <cucumber.filter.tags>@all</cucumber.filter.tags>
                     </systemPropertyVariables>

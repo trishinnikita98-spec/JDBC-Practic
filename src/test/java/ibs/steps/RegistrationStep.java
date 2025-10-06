@@ -19,24 +19,38 @@ public class RegistrationStep {
 
 
     private WebDriverWait wait;
-    public WebDriver driver = AllDriverManager.getDriver();
+    public WebDriver driver;
     public DataTest data = new DataTest();
     static Properties props = new Properties();
     public String URI = "http://217.74.37.176/?route=account/register&language=ru-ru";
     public String SELENOID_URL = "https://selenoid-ui.applineselenoid.fvds.ru/#/";
 
     public RegistrationStep() {
-        this.driver = AllDriverManager.getDriver();
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        if (ConfigManager.isSelenoidMode()) {
+            this.driver = AllDriverManager.getDriver();
+            this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        } else {
+            this.driver = new ChromeDriver();
+            this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        }
     }
 
     @Before
     public void setUp() {
-        AllDriverManager.openRegistrationPage();
+            if (ConfigManager.isSelenoidMode()){
+                AllDriverManager.openRegistrationPage();
 
-        wait.until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//input[@id='input-firstname']")
-        ));
+                wait.until(ExpectedConditions.presenceOfElementLocated(
+                        By.xpath("//input[@id='input-firstname']")
+                ));
+            } else {
+                driver.get("http://217.74.37.176/?route=account/register&language=ru-ru");
+
+                wait.until(ExpectedConditions.presenceOfElementLocated(
+                        By.xpath("//input[@id='input-firstname']")));
+            }
+
+
     }
     @Когда("пользователь вводит данные с email {string}")
     public void пользователь_вводит_данные(String email) {

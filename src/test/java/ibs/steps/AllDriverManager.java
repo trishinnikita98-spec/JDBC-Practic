@@ -136,7 +136,4 @@ public class AllDriverManager {
         }
     }
 
-    public static String getRunMode() {
-        return ConfigManager.isSelenoidMode() ? "selenoid" : "local";
-    }
 }

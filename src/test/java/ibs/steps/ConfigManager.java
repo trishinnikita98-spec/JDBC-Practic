@@ -6,6 +6,7 @@ import java.util.Properties;
 
 public class ConfigManager {
     private static final Properties props = new Properties();
+    private static String type = System.getProperty("type");
 public boolean Selenoid;
     static {
         loadProperties();
@@ -28,8 +29,7 @@ public boolean Selenoid;
     }
 
     public static boolean isSelenoidMode() {
-        String runMode = getProperty("type.driver");
-        return "selenoid".equalsIgnoreCase(runMode.trim());
+        return "selenoid".equalsIgnoreCase(type);
     }
 
     public static boolean isLocalMode() {
