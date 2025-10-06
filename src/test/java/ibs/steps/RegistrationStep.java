@@ -32,7 +32,7 @@ public class RegistrationStep {
 
     @Before
     public void setUp() {
-         AllDriverManager.openRegistrationPage();
+        AllDriverManager.openRegistrationPage();
 
         wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//input[@id='input-firstname']")

@@ -16,10 +16,10 @@
         <allure.version>2.24.0</allure.version>
         <aspectj.version>1.9.20.1</aspectj.version>
         <slf4j.version>2.0.9</slf4j.version>
+        <browser>chrome</browser>
     </properties>
 
     <dependencies>
-        <!-- ваши зависимости без изменений -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -81,7 +81,6 @@
         </dependency>
     </dependencies>
 
-    <!-- ДОБАВЬТЕ ЭТОТ РАЗДЕЛ -->
     <build>
         <plugins>
             <plugin>
@@ -92,6 +91,7 @@
                     <testFailureIgnore>true</testFailureIgnore>
                     <systemPropertyVariables>
                         <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+                        <browser>${browser}</browser>
                     </systemPropertyVariables>
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"

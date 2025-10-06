@@ -34,6 +34,7 @@ import java.util.Map;
 public class AllDriverManager {
     private static WebDriver driver;
     private static WebDriverWait wait;
+    private  static String browserName = System.getProperty("browser");
 
     public static WebDriver getDriver() {
         if (driver == null) {
@@ -52,7 +53,7 @@ public class AllDriverManager {
 
     private static void initializeDriver() {
         if (ConfigManager.isSelenoidMode()) {
-            driver = createSelenoidDriver();
+            driver = createSelenoidDriver(browserName);
             System.out.println("Режим: Selenoid");
         } else {
             driver = createLocalDriver();
@@ -65,12 +66,13 @@ public class AllDriverManager {
         driver.manage().window().maximize();
     }
 
-    private static WebDriver createSelenoidDriver() {
+    private static WebDriver createSelenoidDriver(String browser) {
         try {
-            String browser = ConfigManager.getProperty("type.browser");
+
+
             DesiredCapabilities caps = new DesiredCapabilities();
 
-            switch (browser.toLowerCase()) {
+            switch (browserName.toLowerCase()) {
                 case "chrome":
                     caps.setBrowserName("chrome");
                     break;
